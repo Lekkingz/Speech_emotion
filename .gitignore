@@ -1,19 +1,10 @@
-.pio
 .vscode/.browse.c_cpp.db*
 .vscode/ipch
 
-# Python environments and caches
-.venv/
-.venv312/
-venv/
+# Python caches
 __pycache__/
-*.py[cod]
-
-# Local/generated data
-logs/
-recordings/
-python_ai/inference/temp_recording.wav
-datasets/
+*.pyc
+*.pyo
 
 # Temporary files
 temp_extract_pdf.py

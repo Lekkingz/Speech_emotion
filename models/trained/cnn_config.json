@@ -1,0 +1,28 @@
+{
+  "n_mfcc": 40,
+  "max_pad_len": 174,
+  "input_shape": [
+    40,
+    174,
+    1
+  ],
+  "cnn_filters": [
+    32,
+    64
+  ],
+  "kernel_size": [
+    3,
+    3
+  ],
+  "pool_size": [
+    2,
+    2
+  ],
+  "dropout_rate": 0.3,
+  "dense_units": 128,
+  "optimizer": "adam",
+  "batch_size": 32,
+  "learning_rate": 0.001,
+  "epochs": 40,
+  "test_size": 0.2
+}

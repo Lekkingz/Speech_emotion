@@ -1,7 +1,5 @@
 .pio
 .vscode/.browse.c_cpp.db*
-.vscode/c_cpp_properties.json
-.vscode/launch.json
 .vscode/ipch
 
 # Python environments and caches
@@ -15,7 +13,7 @@ __pycache__/
 logs/
 recordings/
 python_ai/inference/temp_recording.wav
-datasets/raw/
+datasets/
 
 # Temporary files
 temp_extract_pdf.py

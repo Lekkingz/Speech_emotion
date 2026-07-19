@@ -1,0 +1,1180 @@
+{
+  "dataset": {
+    "total_samples": 1440,
+    "num_classes": 8,
+    "classes": [
+      "angry",
+      "calm",
+      "disgust",
+      "fearful",
+      "happy",
+      "neutral",
+      "sad",
+      "surprised"
+    ],
+    "test_size": 0.2
+  },
+  "models": {
+    "CNN + MFCC": {
+      "model": "CNN + MFCC",
+      "accuracy": 0.4270833333333333,
+      "precision_macro": 0.448496360996361,
+      "recall_macro": 0.4234143049932524,
+      "f1_macro": 0.42668374900986794,
+      "specificity_macro": 0.9174573535778803,
+      "specificity_per_class": {
+        "angry": 0.932,
+        "calm": 0.888,
+        "disgust": 0.928,
+        "fearful": 0.9076305220883534,
+        "happy": 0.8634538152610441,
+        "neutral": 0.9888475836431226,
+        "sad": 0.9,
+        "surprised": 0.9317269076305221
+      },
+      "latency_sec": 0.005044836458334127,
+      "training_samples": 1152,
+      "test_samples": 288,
+      "num_classes": 8,
+      "classes": [
+        "angry",
+        "calm",
+        "disgust",
+        "fearful",
+        "happy",
+        "neutral",
+        "sad",
+        "surprised"
+      ],
+      "classification_report": "              precision    recall  f1-score   support\n\n       angry       0.56      0.58      0.57        38\n        calm       0.46      0.63      0.53        38\n     disgust       0.40      0.32      0.35        38\n     fearful       0.49      0.56      0.52        39\n       happy       0.19      0.21      0.20        39\n     neutral       0.70      0.37      0.48        19\n         sad       0.24      0.21      0.23        38\n   surprised       0.54      0.51      0.53        39\n\n    accuracy                           0.43       288\n   macro avg       0.45      0.42      0.43       288\nweighted avg       0.43      0.43      0.42       288\n",
+      "confusion_matrix": [
+        [
+          22,
+          1,
+          3,
+          0,
+          10,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          24,
+          3,
+          0,
+          3,
+          2,
+          5,
+          1
+        ],
+        [
+          4,
+          7,
+          12,
+          3,
+          4,
+          0,
+          6,
+          2
+        ],
+        [
+          3,
+          2,
+          2,
+          22,
+          5,
+          0,
+          2,
+          3
+        ],
+        [
+          7,
+          1,
+          1,
+          8,
+          8,
+          0,
+          6,
+          8
+        ],
+        [
+          0,
+          3,
+          0,
+          1,
+          3,
+          7,
+          3,
+          2
+        ],
+        [
+          2,
+          13,
+          9,
+          3,
+          3,
+          0,
+          8,
+          0
+        ],
+        [
+          1,
+          1,
+          0,
+          8,
+          6,
+          1,
+          2,
+          20
+        ]
+      ]
+    },
+    "CNN + LPC": {
+      "model": "CNN + LPC",
+      "accuracy": 0.2708333333333333,
+      "precision_macro": 0.23621860727591898,
+      "recall_macro": 0.25455465587044535,
+      "f1_macro": 0.22996620589939354,
+      "specificity_macro": 0.8948333333333334,
+      "specificity_per_class": {
+        "angry": 0.908,
+        "calm": 0.804,
+        "disgust": 0.872,
+        "fearful": 0.9718875502008032,
+        "happy": 0.891566265060241,
+        "neutral": 1.0,
+        "sad": 0.908,
+        "surprised": 0.8032128514056225
+      },
+      "latency_sec": 0.0017658222222204738,
+      "training_samples": 1152,
+      "test_samples": 288,
+      "num_classes": 8,
+      "classes": [
+        "angry",
+        "calm",
+        "disgust",
+        "fearful",
+        "happy",
+        "neutral",
+        "sad",
+        "surprised"
+      ],
+      "classification_report": "              precision    recall  f1-score   support\n\n       angry       0.47      0.53      0.49        38\n        calm       0.30      0.55      0.39        38\n     disgust       0.18      0.18      0.18        38\n     fearful       0.30      0.08      0.12        39\n       happy       0.23      0.21      0.22        39\n     neutral       0.00      0.00      0.00        19\n         sad       0.21      0.16      0.18        38\n   surprised       0.21      0.33      0.26        39\n\n    accuracy                           0.27       288\n   macro avg       0.24      0.25      0.23       288\nweighted avg       0.25      0.27      0.24       288\n",
+      "confusion_matrix": [
+        [
+          20,
+          1,
+          3,
+          1,
+          2,
+          0,
+          3,
+          8
+        ],
+        [
+          1,
+          21,
+          1,
+          0,
+          4,
+          0,
+          4,
+          7
+        ],
+        [
+          6,
+          12,
+          7,
+          1,
+          4,
+          0,
+          0,
+          8
+        ],
+        [
+          3,
+          6,
+          6,
+          3,
+          4,
+          0,
+          6,
+          11
+        ],
+        [
+          6,
+          7,
+          7,
+          1,
+          8,
+          0,
+          4,
+          6
+        ],
+        [
+          1,
+          4,
+          2,
+          0,
+          4,
+          0,
+          3,
+          5
+        ],
+        [
+          4,
+          10,
+          5,
+          3,
+          6,
+          0,
+          6,
+          4
+        ],
+        [
+          2,
+          9,
+          8,
+          1,
+          3,
+          0,
+          3,
+          13
+        ]
+      ]
+    },
+    "CNN + LPC + MFCC": {
+      "model": "CNN + LPC + MFCC",
+      "accuracy": 0.3819444444444444,
+      "precision_macro": 0.34636686049063503,
+      "recall_macro": 0.3571187584345479,
+      "f1_macro": 0.31374065789716427,
+      "specificity_macro": 0.9108212851405623,
+      "specificity_per_class": {
+        "angry": 0.912,
+        "calm": 0.868,
+        "disgust": 0.872,
+        "fearful": 0.9397590361445783,
+        "happy": 0.9156626506024096,
+        "neutral": 1.0,
+        "sad": 0.992,
+        "surprised": 0.7871485943775101
+      },
+      "latency_sec": 0.0014923493055536913,
+      "training_samples": 1152,
+      "test_samples": 288,
+      "num_classes": 8,
+      "classes": [
+        "angry",
+        "calm",
+        "disgust",
+        "fearful",
+        "happy",
+        "neutral",
+        "sad",
+        "surprised"
+      ],
+      "classification_report": "              precision    recall  f1-score   support\n\n       angry       0.31      0.26      0.29        38\n        calm       0.49      0.84      0.62        38\n     disgust       0.24      0.26      0.25        38\n     fearful       0.50      0.38      0.43        39\n       happy       0.38      0.33      0.36        39\n     neutral       0.00      0.00      0.00        19\n         sad       0.50      0.05      0.10        38\n   surprised       0.35      0.72      0.47        39\n\n    accuracy                           0.38       288\n   macro avg       0.35      0.36      0.31       288\nweighted avg       0.37      0.38      0.34       288\n",
+      "confusion_matrix": [
+        [
+          10,
+          2,
+          6,
+          5,
+          7,
+          0,
+          0,
+          8
+        ],
+        [
+          0,
+          32,
+          5,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          5,
+          10,
+          3,
+          5,
+          0,
+          0,
+          14
+        ],
+        [
+          6,
+          1,
+          3,
+          15,
+          3,
+          0,
+          0,
+          11
+        ],
+        [
+          9,
+          1,
+          5,
+          3,
+          13,
+          0,
+          0,
+          8
+        ],
+        [
+          0,
+          4,
+          5,
+          0,
+          3,
+          0,
+          2,
+          5
+        ],
+        [
+          1,
+          18,
+          5,
+          3,
+          2,
+          0,
+          2,
+          7
+        ],
+        [
+          5,
+          2,
+          3,
+          1,
+          0,
+          0,
+          0,
+          28
+        ]
+      ]
+    },
+    "CRNN + MFCC": {
+      "model": "CRNN + MFCC",
+      "accuracy": 0.5381944444444444,
+      "precision_macro": 0.5380782218110072,
+      "recall_macro": 0.537533738191633,
+      "f1_macro": 0.5312208710622024,
+      "specificity_macro": 0.9339172899777549,
+      "specificity_per_class": {
+        "angry": 0.984,
+        "calm": 0.944,
+        "disgust": 0.908,
+        "fearful": 0.8995983935742972,
+        "happy": 0.9236947791164659,
+        "neutral": 0.9442379182156134,
+        "sad": 0.916,
+        "surprised": 0.9518072289156626
+      },
+      "latency_sec": 0.004977283333333717,
+      "training_samples": 1152,
+      "test_samples": 288,
+      "num_classes": 8,
+      "classes": [
+        "angry",
+        "calm",
+        "disgust",
+        "fearful",
+        "happy",
+        "neutral",
+        "sad",
+        "surprised"
+      ],
+      "classification_report": "              precision    recall  f1-score   support\n\n       angry       0.85      0.61      0.71        38\n        calm       0.63      0.63      0.63        38\n     disgust       0.50      0.61      0.55        38\n     fearful       0.51      0.67      0.58        39\n       happy       0.34      0.26      0.29        39\n     neutral       0.40      0.53      0.45        19\n         sad       0.38      0.34      0.36        38\n   surprised       0.68      0.67      0.68        39\n\n    accuracy                           0.54       288\n   macro avg       0.54      0.54      0.53       288\nweighted avg       0.55      0.54      0.54       288\n",
+      "confusion_matrix": [
+        [
+          23,
+          1,
+          6,
+          2,
+          1,
+          0,
+          1,
+          4
+        ],
+        [
+          0,
+          24,
+          3,
+          0,
+          1,
+          3,
+          7,
+          0
+        ],
+        [
+          0,
+          2,
+          23,
+          1,
+          5,
+          2,
+          5,
+          0
+        ],
+        [
+          1,
+          1,
+          3,
+          26,
+          4,
+          1,
+          2,
+          1
+        ],
+        [
+          1,
+          0,
+          4,
+          14,
+          10,
+          1,
+          3,
+          6
+        ],
+        [
+          0,
+          2,
+          1,
+          1,
+          1,
+          10,
+          3,
+          1
+        ],
+        [
+          2,
+          8,
+          5,
+          1,
+          4,
+          5,
+          13,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          6,
+          3,
+          3,
+          0,
+          26
+        ]
+      ]
+    },
+    "CRNN + LPC + MFCC": {
+      "model": "CRNN + LPC + MFCC",
+      "accuracy": 0.5520833333333334,
+      "precision_macro": 0.5480271194257685,
+      "recall_macro": 0.5468960863697706,
+      "f1_macro": 0.5403964603714324,
+      "specificity_macro": 0.9364004941699885,
+      "specificity_per_class": {
+        "angry": 0.96,
+        "calm": 0.944,
+        "disgust": 0.944,
+        "fearful": 0.9317269076305221,
+        "happy": 0.9397590361445783,
+        "neutral": 0.895910780669145,
+        "sad": 0.924,
+        "surprised": 0.9518072289156626
+      },
+      "latency_sec": 0.010478531944443148,
+      "training_samples": 1152,
+      "test_samples": 288,
+      "num_classes": 8,
+      "classes": [
+        "angry",
+        "calm",
+        "disgust",
+        "fearful",
+        "happy",
+        "neutral",
+        "sad",
+        "surprised"
+      ],
+      "classification_report": "              precision    recall  f1-score   support\n\n       angry       0.70      0.61      0.65        38\n        calm       0.63      0.63      0.63        38\n     disgust       0.62      0.61      0.61        38\n     fearful       0.63      0.74      0.68        39\n       happy       0.52      0.41      0.46        39\n     neutral       0.24      0.47      0.32        19\n         sad       0.39      0.32      0.35        38\n   surprised       0.66      0.59      0.62        39\n\n    accuracy                           0.55       288\n   macro avg       0.55      0.55      0.54       288\nweighted avg       0.57      0.55      0.56       288\n",
+      "confusion_matrix": [
+        [
+          23,
+          1,
+          4,
+          2,
+          4,
+          1,
+          1,
+          2
+        ],
+        [
+          0,
+          24,
+          2,
+          0,
+          0,
+          9,
+          3,
+          0
+        ],
+        [
+          1,
+          1,
+          23,
+          1,
+          0,
+          3,
+          7,
+          2
+        ],
+        [
+          0,
+          0,
+          1,
+          29,
+          3,
+          1,
+          2,
+          3
+        ],
+        [
+          4,
+          0,
+          3,
+          6,
+          16,
+          4,
+          4,
+          2
+        ],
+        [
+          1,
+          3,
+          0,
+          0,
+          3,
+          9,
+          2,
+          1
+        ],
+        [
+          1,
+          8,
+          4,
+          1,
+          4,
+          6,
+          12,
+          2
+        ],
+        [
+          3,
+          1,
+          0,
+          7,
+          1,
+          4,
+          0,
+          23
+        ]
+      ]
+    }
+  },
+  "tables": {
+    "cnn": {
+      "CNN + MFCC": {
+        "model": "CNN + MFCC",
+        "accuracy": 0.4270833333333333,
+        "precision_macro": 0.448496360996361,
+        "recall_macro": 0.4234143049932524,
+        "f1_macro": 0.42668374900986794,
+        "specificity_macro": 0.9174573535778803,
+        "specificity_per_class": {
+          "angry": 0.932,
+          "calm": 0.888,
+          "disgust": 0.928,
+          "fearful": 0.9076305220883534,
+          "happy": 0.8634538152610441,
+          "neutral": 0.9888475836431226,
+          "sad": 0.9,
+          "surprised": 0.9317269076305221
+        },
+        "latency_sec": 0.005044836458334127,
+        "training_samples": 1152,
+        "test_samples": 288,
+        "num_classes": 8,
+        "classes": [
+          "angry",
+          "calm",
+          "disgust",
+          "fearful",
+          "happy",
+          "neutral",
+          "sad",
+          "surprised"
+        ],
+        "classification_report": "              precision    recall  f1-score   support\n\n       angry       0.56      0.58      0.57        38\n        calm       0.46      0.63      0.53        38\n     disgust       0.40      0.32      0.35        38\n     fearful       0.49      0.56      0.52        39\n       happy       0.19      0.21      0.20        39\n     neutral       0.70      0.37      0.48        19\n         sad       0.24      0.21      0.23        38\n   surprised       0.54      0.51      0.53        39\n\n    accuracy                           0.43       288\n   macro avg       0.45      0.42      0.43       288\nweighted avg       0.43      0.43      0.42       288\n",
+        "confusion_matrix": [
+          [
+            22,
+            1,
+            3,
+            0,
+            10,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            24,
+            3,
+            0,
+            3,
+            2,
+            5,
+            1
+          ],
+          [
+            4,
+            7,
+            12,
+            3,
+            4,
+            0,
+            6,
+            2
+          ],
+          [
+            3,
+            2,
+            2,
+            22,
+            5,
+            0,
+            2,
+            3
+          ],
+          [
+            7,
+            1,
+            1,
+            8,
+            8,
+            0,
+            6,
+            8
+          ],
+          [
+            0,
+            3,
+            0,
+            1,
+            3,
+            7,
+            3,
+            2
+          ],
+          [
+            2,
+            13,
+            9,
+            3,
+            3,
+            0,
+            8,
+            0
+          ],
+          [
+            1,
+            1,
+            0,
+            8,
+            6,
+            1,
+            2,
+            20
+          ]
+        ]
+      },
+      "CNN + LPC": {
+        "model": "CNN + LPC",
+        "accuracy": 0.2708333333333333,
+        "precision_macro": 0.23621860727591898,
+        "recall_macro": 0.25455465587044535,
+        "f1_macro": 0.22996620589939354,
+        "specificity_macro": 0.8948333333333334,
+        "specificity_per_class": {
+          "angry": 0.908,
+          "calm": 0.804,
+          "disgust": 0.872,
+          "fearful": 0.9718875502008032,
+          "happy": 0.891566265060241,
+          "neutral": 1.0,
+          "sad": 0.908,
+          "surprised": 0.8032128514056225
+        },
+        "latency_sec": 0.0017658222222204738,
+        "training_samples": 1152,
+        "test_samples": 288,
+        "num_classes": 8,
+        "classes": [
+          "angry",
+          "calm",
+          "disgust",
+          "fearful",
+          "happy",
+          "neutral",
+          "sad",
+          "surprised"
+        ],
+        "classification_report": "              precision    recall  f1-score   support\n\n       angry       0.47      0.53      0.49        38\n        calm       0.30      0.55      0.39        38\n     disgust       0.18      0.18      0.18        38\n     fearful       0.30      0.08      0.12        39\n       happy       0.23      0.21      0.22        39\n     neutral       0.00      0.00      0.00        19\n         sad       0.21      0.16      0.18        38\n   surprised       0.21      0.33      0.26        39\n\n    accuracy                           0.27       288\n   macro avg       0.24      0.25      0.23       288\nweighted avg       0.25      0.27      0.24       288\n",
+        "confusion_matrix": [
+          [
+            20,
+            1,
+            3,
+            1,
+            2,
+            0,
+            3,
+            8
+          ],
+          [
+            1,
+            21,
+            1,
+            0,
+            4,
+            0,
+            4,
+            7
+          ],
+          [
+            6,
+            12,
+            7,
+            1,
+            4,
+            0,
+            0,
+            8
+          ],
+          [
+            3,
+            6,
+            6,
+            3,
+            4,
+            0,
+            6,
+            11
+          ],
+          [
+            6,
+            7,
+            7,
+            1,
+            8,
+            0,
+            4,
+            6
+          ],
+          [
+            1,
+            4,
+            2,
+            0,
+            4,
+            0,
+            3,
+            5
+          ],
+          [
+            4,
+            10,
+            5,
+            3,
+            6,
+            0,
+            6,
+            4
+          ],
+          [
+            2,
+            9,
+            8,
+            1,
+            3,
+            0,
+            3,
+            13
+          ]
+        ]
+      },
+      "CNN + LPC + MFCC": {
+        "model": "CNN + LPC + MFCC",
+        "accuracy": 0.3819444444444444,
+        "precision_macro": 0.34636686049063503,
+        "recall_macro": 0.3571187584345479,
+        "f1_macro": 0.31374065789716427,
+        "specificity_macro": 0.9108212851405623,
+        "specificity_per_class": {
+          "angry": 0.912,
+          "calm": 0.868,
+          "disgust": 0.872,
+          "fearful": 0.9397590361445783,
+          "happy": 0.9156626506024096,
+          "neutral": 1.0,
+          "sad": 0.992,
+          "surprised": 0.7871485943775101
+        },
+        "latency_sec": 0.0014923493055536913,
+        "training_samples": 1152,
+        "test_samples": 288,
+        "num_classes": 8,
+        "classes": [
+          "angry",
+          "calm",
+          "disgust",
+          "fearful",
+          "happy",
+          "neutral",
+          "sad",
+          "surprised"
+        ],
+        "classification_report": "              precision    recall  f1-score   support\n\n       angry       0.31      0.26      0.29        38\n        calm       0.49      0.84      0.62        38\n     disgust       0.24      0.26      0.25        38\n     fearful       0.50      0.38      0.43        39\n       happy       0.38      0.33      0.36        39\n     neutral       0.00      0.00      0.00        19\n         sad       0.50      0.05      0.10        38\n   surprised       0.35      0.72      0.47        39\n\n    accuracy                           0.38       288\n   macro avg       0.35      0.36      0.31       288\nweighted avg       0.37      0.38      0.34       288\n",
+        "confusion_matrix": [
+          [
+            10,
+            2,
+            6,
+            5,
+            7,
+            0,
+            0,
+            8
+          ],
+          [
+            0,
+            32,
+            5,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            5,
+            10,
+            3,
+            5,
+            0,
+            0,
+            14
+          ],
+          [
+            6,
+            1,
+            3,
+            15,
+            3,
+            0,
+            0,
+            11
+          ],
+          [
+            9,
+            1,
+            5,
+            3,
+            13,
+            0,
+            0,
+            8
+          ],
+          [
+            0,
+            4,
+            5,
+            0,
+            3,
+            0,
+            2,
+            5
+          ],
+          [
+            1,
+            18,
+            5,
+            3,
+            2,
+            0,
+            2,
+            7
+          ],
+          [
+            5,
+            2,
+            3,
+            1,
+            0,
+            0,
+            0,
+            28
+          ]
+        ]
+      }
+    },
+    "crnn": {
+      "CRNN + MFCC": {
+        "model": "CRNN + MFCC",
+        "accuracy": 0.5381944444444444,
+        "precision_macro": 0.5380782218110072,
+        "recall_macro": 0.537533738191633,
+        "f1_macro": 0.5312208710622024,
+        "specificity_macro": 0.9339172899777549,
+        "specificity_per_class": {
+          "angry": 0.984,
+          "calm": 0.944,
+          "disgust": 0.908,
+          "fearful": 0.8995983935742972,
+          "happy": 0.9236947791164659,
+          "neutral": 0.9442379182156134,
+          "sad": 0.916,
+          "surprised": 0.9518072289156626
+        },
+        "latency_sec": 0.004977283333333717,
+        "training_samples": 1152,
+        "test_samples": 288,
+        "num_classes": 8,
+        "classes": [
+          "angry",
+          "calm",
+          "disgust",
+          "fearful",
+          "happy",
+          "neutral",
+          "sad",
+          "surprised"
+        ],
+        "classification_report": "              precision    recall  f1-score   support\n\n       angry       0.85      0.61      0.71        38\n        calm       0.63      0.63      0.63        38\n     disgust       0.50      0.61      0.55        38\n     fearful       0.51      0.67      0.58        39\n       happy       0.34      0.26      0.29        39\n     neutral       0.40      0.53      0.45        19\n         sad       0.38      0.34      0.36        38\n   surprised       0.68      0.67      0.68        39\n\n    accuracy                           0.54       288\n   macro avg       0.54      0.54      0.53       288\nweighted avg       0.55      0.54      0.54       288\n",
+        "confusion_matrix": [
+          [
+            23,
+            1,
+            6,
+            2,
+            1,
+            0,
+            1,
+            4
+          ],
+          [
+            0,
+            24,
+            3,
+            0,
+            1,
+            3,
+            7,
+            0
+          ],
+          [
+            0,
+            2,
+            23,
+            1,
+            5,
+            2,
+            5,
+            0
+          ],
+          [
+            1,
+            1,
+            3,
+            26,
+            4,
+            1,
+            2,
+            1
+          ],
+          [
+            1,
+            0,
+            4,
+            14,
+            10,
+            1,
+            3,
+            6
+          ],
+          [
+            0,
+            2,
+            1,
+            1,
+            1,
+            10,
+            3,
+            1
+          ],
+          [
+            2,
+            8,
+            5,
+            1,
+            4,
+            5,
+            13,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            6,
+            3,
+            3,
+            0,
+            26
+          ]
+        ]
+      },
+      "CRNN + LPC + MFCC": {
+        "model": "CRNN + LPC + MFCC",
+        "accuracy": 0.5520833333333334,
+        "precision_macro": 0.5480271194257685,
+        "recall_macro": 0.5468960863697706,
+        "f1_macro": 0.5403964603714324,
+        "specificity_macro": 0.9364004941699885,
+        "specificity_per_class": {
+          "angry": 0.96,
+          "calm": 0.944,
+          "disgust": 0.944,
+          "fearful": 0.9317269076305221,
+          "happy": 0.9397590361445783,
+          "neutral": 0.895910780669145,
+          "sad": 0.924,
+          "surprised": 0.9518072289156626
+        },
+        "latency_sec": 0.010478531944443148,
+        "training_samples": 1152,
+        "test_samples": 288,
+        "num_classes": 8,
+        "classes": [
+          "angry",
+          "calm",
+          "disgust",
+          "fearful",
+          "happy",
+          "neutral",
+          "sad",
+          "surprised"
+        ],
+        "classification_report": "              precision    recall  f1-score   support\n\n       angry       0.70      0.61      0.65        38\n        calm       0.63      0.63      0.63        38\n     disgust       0.62      0.61      0.61        38\n     fearful       0.63      0.74      0.68        39\n       happy       0.52      0.41      0.46        39\n     neutral       0.24      0.47      0.32        19\n         sad       0.39      0.32      0.35        38\n   surprised       0.66      0.59      0.62        39\n\n    accuracy                           0.55       288\n   macro avg       0.55      0.55      0.54       288\nweighted avg       0.57      0.55      0.56       288\n",
+        "confusion_matrix": [
+          [
+            23,
+            1,
+            4,
+            2,
+            4,
+            1,
+            1,
+            2
+          ],
+          [
+            0,
+            24,
+            2,
+            0,
+            0,
+            9,
+            3,
+            0
+          ],
+          [
+            1,
+            1,
+            23,
+            1,
+            0,
+            3,
+            7,
+            2
+          ],
+          [
+            0,
+            0,
+            1,
+            29,
+            3,
+            1,
+            2,
+            3
+          ],
+          [
+            4,
+            0,
+            3,
+            6,
+            16,
+            4,
+            4,
+            2
+          ],
+          [
+            1,
+            3,
+            0,
+            0,
+            3,
+            9,
+            2,
+            1
+          ],
+          [
+            1,
+            8,
+            4,
+            1,
+            4,
+            6,
+            12,
+            2
+          ],
+          [
+            3,
+            1,
+            0,
+            7,
+            1,
+            4,
+            0,
+            23
+          ]
+        ]
+      }
+    }
+  },
+  "best_model": {
+    "model": "CRNN + LPC + MFCC",
+    "accuracy": 0.5520833333333334,
+    "f1_macro": 0.5403964603714324
+  }
+}

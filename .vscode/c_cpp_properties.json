@@ -493,7 +493,7 @@
                 "ARDUINO_ESP32_DEV",
                 "WIFI_SSID=\"\"",
                 "WIFI_PASSWORD=\"\"",
-                "SERVER_URL=\"http://192.168.1.100:5000/predict\"",
+                "SERVER_URL=\"http://192.168.1.144:5000/predict\"",
                 "AP_SSID=\"ESP32_SpeechEmotion\"",
                 "AP_PASSWORD=\"\"",
                 "HAVE_CONFIG_H",

@@ -189,6 +189,20 @@ def build_crnn(input_shape, num_classes: int):
     return model
 
 
+def build_rnn(input_shape, num_classes: int):
+    model = models.Sequential(
+        [
+            layers.Input(shape=input_shape),
+            layers.Bidirectional(layers.LSTM(64)),
+            layers.Dropout(0.3),
+            layers.Dense(128, activation="relu"),
+            layers.Dense(num_classes, activation="softmax"),
+        ]
+    )
+    model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
+    return model
+
+
 def train_model(name: str, model, X_train, y_train_cat, X_test, y_test_cat, epochs: int, batch_size: int, force: bool):
     model_path = OUT_DIR / f"{name}.keras"
     history_path = OUT_DIR / f"{name}_history.npy"
@@ -258,9 +272,24 @@ def write_report(results: dict):
     txt_path = OUT_DIR / "chapter4_tables.txt"
     json_path.write_text(json.dumps(results, indent=2), encoding="utf-8")
 
+    rnn = results["tables"]["rnn"]
     cnn = results["tables"]["cnn"]
     crnn = results["tables"]["crnn"]
     lines = []
+    lines.append("======================================================")
+    lines.append("Table 4.1 RNN Model Comparison on RAVDESS Dataset")
+    lines.append("======================================================")
+    lines.append("")
+    lines.append("| Model | Accuracy | Precision | Recall | F1-score | Specificity | Latency (sec) |")
+    lines.append("|-------|----------|-----------|--------|----------|-------------|---------------|")
+    for label in ["RNN + LPC", "RNN + MFCC", "RNN + LPC + MFCC"]:
+        r = rnn[label]
+        lines.append(
+            f"| {label} | {format_metric(r.get('accuracy'))} | {format_metric(r.get('precision_macro'))} | "
+            f"{format_metric(r.get('recall_macro'))} | {format_metric(r.get('f1_macro'))} | "
+            f"{format_metric(r.get('specificity_macro'))} | {format_latency(r.get('latency_sec'))} |"
+        )
+    lines.append("")
     lines.append("======================================================")
     lines.append("Table 4.2 CNN Model Comparison on RAVDESS Dataset")
     lines.append("======================================================")
@@ -341,7 +370,7 @@ def main():
             "test_size": args.test_size,
         },
         "models": {},
-        "tables": {"cnn": {}, "crnn": {}},
+        "tables": {"rnn": {}, "cnn": {}, "crnn": {}},
     }
 
     cnn_mfcc = existing_cnn_mfcc_result(data, le, y_enc, y_cat, args.test_size)
@@ -350,6 +379,9 @@ def main():
         results["tables"]["cnn"]["CNN + MFCC"] = cnn_mfcc
 
     specs = [
+        ("RNN + LPC", "rnn_lpc", "lpc_vectors", build_rnn),
+        ("RNN + MFCC", "rnn_mfcc", "mfcc_sequences", build_rnn),
+        ("RNN + LPC + MFCC", "rnn_lpc_mfcc", "hybrid_sequences", build_rnn),
         ("CNN + LPC", "cnn_lpc", "lpc_vectors", build_cnn_1d),
         ("CNN + LPC + MFCC", "cnn_lpc_mfcc", "hybrid_vectors", build_cnn_1d),
         ("CRNN + MFCC", "crnn_mfcc", "mfcc_sequences", build_crnn),
@@ -379,9 +411,16 @@ def main():
         )
         result = evaluate_model(table_name, model, X_train, X_test, y_test, le.classes_)
         results["models"][table_name] = result
-        table_key = "crnn" if table_name.startswith("CRNN") else "cnn"
+        if table_name.startswith("CRNN"):
+            table_key = "crnn"
+        elif table_name.startswith("RNN"):
+            table_key = "rnn"
+        else:
+            table_key = "cnn"
         results["tables"][table_key][table_name] = result
 
+    for label in ["RNN + LPC", "RNN + MFCC", "RNN + LPC + MFCC"]:
+        results["tables"]["rnn"].setdefault(label, {"model": label})
     for label in ["CNN + LPC", "CNN + MFCC", "CNN + LPC + MFCC"]:
         results["tables"]["cnn"].setdefault(label, {"model": label})
     for label in ["CRNN + MFCC", "CRNN + LPC + MFCC"]:

@@ -45,7 +45,7 @@ def create_app(model=None, scaler=None, encoder=None, model_type=None, config=No
 
     @app.route("/health", methods=["GET"])
     def health():
-        model_loaded = model is not None and scaler is not None and encoder is not None
+        model_loaded = model is not None and encoder is not None
         return jsonify({
             "status": "ok",
             "service": "speech-emotion-server",
@@ -69,7 +69,7 @@ def create_app(model=None, scaler=None, encoder=None, model_type=None, config=No
 
     @app.route("/predict", methods=["POST"])
     def predict():
-        if model is None or scaler is None or encoder is None:
+        if model is None or encoder is None:
             return jsonify({"error": "Model artifacts are not loaded"}), 503
 
         payload = None

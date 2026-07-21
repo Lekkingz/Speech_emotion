@@ -6,3 +6,4 @@ scikit-learn>=1.4.0
 scipy>=1.11.0
 soundfile>=0.12.1
 gunicorn>=22.0.0
+tensorflow-cpu>=2.16.0

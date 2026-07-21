@@ -11,20 +11,27 @@ from flask import Flask, jsonify, request
 try:
     from .model_utils import (
         EXPECTED_FEATURES,
-        load_model_artifacts,
+        extract_cnn_features_from_wav_bytes,
         extract_features_from_wav_bytes,
+        load_model_artifacts,
     )
 except ImportError:  # pragma: no cover - direct script execution fallback
     from model_utils import (
         EXPECTED_FEATURES,
-        load_model_artifacts,
+        extract_cnn_features_from_wav_bytes,
         extract_features_from_wav_bytes,
+        load_model_artifacts,
     )
 
 
 app = Flask(__name__)
 
-MODEL, SCALER, ENCODER = load_model_artifacts()
+ARTIFACTS = load_model_artifacts()
+MODEL = ARTIFACTS["model"]
+SCALER = ARTIFACTS["scaler"]
+ENCODER = ARTIFACTS["encoder"]
+MODEL_TYPE = ARTIFACTS["model_type"]
+CNN_CONFIG = ARTIFACTS.get("config") or {}
 
 
 @app.route("/health", methods=["GET"])
@@ -52,14 +59,20 @@ def predict():
         return jsonify({"error": "No audio payload received"}), 400
 
     try:
-        features = extract_features_from_wav_bytes(payload, expected_features=EXPECTED_FEATURES)
-        features = SCALER.transform(features)
+        if MODEL_TYPE == "cnn":
+            features = extract_cnn_features_from_wav_bytes(payload, config=CNN_CONFIG)
+            probabilities = MODEL.predict(features, verbose=0)[0]
+            prediction = int(np.argmax(probabilities))
+            confidence = float(np.max(probabilities))
+        else:
+            features = extract_features_from_wav_bytes(payload, expected_features=EXPECTED_FEATURES)
+            features = SCALER.transform(features)
 
-        prediction = MODEL.predict(features)[0]
-        probabilities = MODEL.predict_proba(features)[0]
+            prediction = MODEL.predict(features)[0]
+            probabilities = MODEL.predict_proba(features)[0]
+            confidence = float(np.max(probabilities))
+
         emotion = ENCODER.inverse_transform([prediction])[0]
-        confidence = float(np.max(probabilities))
-
         return jsonify({"emotion": emotion, "confidence": round(confidence, 4)})
     except Exception as exc:  # pragma: no cover - defensive guard
         return jsonify({"error": str(exc)}), 500
@@ -93,13 +106,20 @@ def run_local_demo(duration_seconds: float = 4.0) -> None:
     print("Recording audio for prediction...")
     wav_bytes = record_audio_seconds(duration_seconds)
 
-    features = extract_features_from_wav_bytes(wav_bytes, expected_features=EXPECTED_FEATURES)
-    features = SCALER.transform(features)
+    if MODEL_TYPE == "cnn":
+        features = extract_cnn_features_from_wav_bytes(wav_bytes, config=CNN_CONFIG)
+        probabilities = MODEL.predict(features, verbose=0)[0]
+        prediction = int(np.argmax(probabilities))
+        confidence = float(np.max(probabilities))
+    else:
+        features = extract_features_from_wav_bytes(wav_bytes, expected_features=EXPECTED_FEATURES)
+        features = SCALER.transform(features)
 
-    prediction = MODEL.predict(features)[0]
-    probabilities = MODEL.predict_proba(features)[0]
+        prediction = MODEL.predict(features)[0]
+        probabilities = MODEL.predict_proba(features)[0]
+        confidence = float(np.max(probabilities))
+
     emotion = ENCODER.inverse_transform([prediction])[0]
-    confidence = float(np.max(probabilities))
 
     print(f"Detected emotion: {emotion} ({confidence:.2%})")
 

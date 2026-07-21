@@ -1,4 +1,5 @@
 import io
+import json
 import wave
 from pathlib import Path
 from typing import Optional, Tuple
@@ -11,26 +12,52 @@ import numpy as np
 MODEL_DIR = Path(__file__).resolve().parents[2] / "models" / "trained"
 TARGET_SAMPLE_RATE = 22050
 EXPECTED_FEATURES = 80
+DEFAULT_CNN_CONFIG = {
+    "n_mfcc": 40,
+    "max_pad_len": 174,
+}
 
 
 def load_model_artifacts(model_dir: Optional[Path] = None):
-    """Load the trained model artifacts once and return them."""
+    """Load the best available trained model artifacts for inference."""
     resolved_dir = Path(model_dir or MODEL_DIR).resolve()
 
-    model_path = resolved_dir / "emotion_model.pkl"
+    cnn_model_path = resolved_dir / "cnn_emotion_model.h5"
+    cnn_encoder_path = resolved_dir / "cnn_label_encoder.pkl"
+    cnn_config_path = resolved_dir / "cnn_config.json"
+    legacy_model_path = resolved_dir / "emotion_model.pkl"
     scaler_path = resolved_dir / "scaler.pkl"
     encoder_path = resolved_dir / "label_encoder.pkl"
 
-    if not model_path.exists() or not scaler_path.exists() or not encoder_path.exists():
+    if cnn_model_path.exists() and cnn_encoder_path.exists():
+        try:
+            from tensorflow.keras.models import load_model
+        except Exception as exc:  # pragma: no cover - runtime dependency handling
+            if legacy_model_path.exists() and scaler_path.exists() and encoder_path.exists():
+                model = joblib.load(legacy_model_path)
+                scaler = joblib.load(scaler_path)
+                encoder = joblib.load(encoder_path)
+                return {"model": model, "scaler": scaler, "encoder": encoder, "model_type": "mlp", "config": None}
+            raise ImportError("TensorFlow is required to load the CNN model") from exc
+
+        model = load_model(cnn_model_path, compile=False)
+        encoder = joblib.load(cnn_encoder_path)
+        config = {}
+        if cnn_config_path.exists():
+            with cnn_config_path.open("r", encoding="utf-8") as handle:
+                config = json.load(handle)
+        return {"model": model, "scaler": None, "encoder": encoder, "model_type": "cnn", "config": config}
+
+    if not legacy_model_path.exists() or not scaler_path.exists() or not encoder_path.exists():
         raise FileNotFoundError(
             f"Expected model files under {resolved_dir}, but one or more were not found."
         )
 
-    model = joblib.load(model_path)
+    model = joblib.load(legacy_model_path)
     scaler = joblib.load(scaler_path)
     encoder = joblib.load(encoder_path)
 
-    return model, scaler, encoder
+    return {"model": model, "scaler": scaler, "encoder": encoder, "model_type": "mlp", "config": None}
 
 
 def _load_audio_from_wav_bytes(wav_bytes: bytes) -> Tuple[np.ndarray, int]:
@@ -81,6 +108,42 @@ def _extract_lpc_features(audio: np.ndarray, order: int = 13) -> np.ndarray:
         return padded
 
     return np.asarray(lpc_coeffs[:order], dtype=np.float32)
+
+
+def extract_cnn_features_from_wav_bytes(
+    wav_bytes: bytes,
+    config: Optional[dict] = None,
+    target_sample_rate: int = TARGET_SAMPLE_RATE,
+) -> np.ndarray:
+    """Create CNN-compatible MFCC input tensors matching the training pipeline."""
+    cfg = dict(DEFAULT_CNN_CONFIG)
+    if config:
+        cfg.update(config)
+
+    audio, sample_rate = _load_audio_from_wav_bytes(wav_bytes)
+
+    if sample_rate != target_sample_rate:
+        audio = librosa.resample(audio, orig_sr=sample_rate, target_sr=target_sample_rate)
+
+    audio, _ = librosa.effects.trim(audio, top_db=20)
+
+    if audio.size == 0:
+        audio = np.zeros(target_sample_rate, dtype=np.float32)
+
+    audio = librosa.util.normalize(audio)
+
+    n_mfcc = int(cfg.get("n_mfcc", 40))
+    max_pad_len = int(cfg.get("max_pad_len", 174))
+    mfcc = librosa.feature.mfcc(y=audio, sr=target_sample_rate, n_mfcc=n_mfcc)
+
+    if mfcc.shape[1] < max_pad_len:
+        pad_width = max_pad_len - mfcc.shape[1]
+        mfcc = np.pad(mfcc, ((0, 0), (0, pad_width)), mode="constant")
+    else:
+        mfcc = mfcc[:, :max_pad_len]
+
+    mfcc = mfcc[..., np.newaxis]
+    return mfcc.astype(np.float32).reshape(1, n_mfcc, max_pad_len, 1)
 
 
 def extract_features_from_wav_bytes(

@@ -433,36 +433,36 @@ bool postWavAndHandleResponse(const std::vector<uint8_t> &wavData) {
 
   Serial.printf("Posting WAV %u bytes, free heap before POST: %u\n", wavData.size(), ESP.getFreeHeap());
 
-  client->printf("POST %s HTTP/1.1\r\n", requestPath.c_str());
-  client->printf("Host: %s:%d\r\n", host.c_str(), port);
-  client->print("Content-Type: audio/wav\r\n");
-  client->printf("Content-Length: %u\r\n", wavData.size());
-  client->print("Connection: close\r\n\r\n");
+  client.printf("POST %s HTTP/1.1\r\n", requestPath.c_str());
+  client.printf("Host: %s:%d\r\n", host.c_str(), port);
+  client.print("Content-Type: audio/wav\r\n");
+  client.printf("Content-Length: %u\r\n", wavData.size());
+  client.print("Connection: close\r\n\r\n");
 
   const size_t chunkSize = 1024;
   for (size_t offset = 0; offset < wavData.size(); offset += chunkSize) {
     size_t toWrite = min(chunkSize, wavData.size() - offset);
-    size_t written = client->write(wavData.data() + offset, toWrite);
+    size_t written = client.write(wavData.data() + offset, toWrite);
     if (written != toWrite) {
       Serial.printf("Short write: %u/%u\n", written, toWrite);
-      client->stop();
+      client.stop();
       return false;
     }
   }
-  client->flush();
+  client.flush();
 
   unsigned long responseStart = millis();
-  while (!client->available() && millis() - responseStart < 8000) {
+  while (!client.available() && millis() - responseStart < 8000) {
     delay(10);
   }
 
-  if (!client->available()) {
+  if (!client.available()) {
     Serial.println("No HTTP response from server");
-    client->stop();
+    client.stop();
     return false;
   }
 
-  String statusLine = client->readStringUntil('\n');
+  String statusLine = client.readStringUntil('\n');
   statusLine.trim();
   Serial.print("HTTP status line: ");
   Serial.println(statusLine);
@@ -472,8 +472,8 @@ bool postWavAndHandleResponse(const std::vector<uint8_t> &wavData) {
 
   int contentLength = -1;
   bool chunked = false;
-  while (client->available()) {
-    String line = client->readStringUntil('\n');
+  while (client.available()) {
+    String line = client.readStringUntil('\n');
     line.trim();
     if (line.length() == 0) break;
     Serial.print("Header: ");
@@ -491,16 +491,16 @@ bool postWavAndHandleResponse(const std::vector<uint8_t> &wavData) {
   String response;
   unsigned long bodyStart = millis();
   while (millis() - bodyStart < 8000) {
-    while (client->available()) {
-      response += (char)client->read();
+    while (client.available()) {
+      response += (char)client.read();
       bodyStart = millis();
       if (contentLength > 0 && response.length() >= contentLength) break;
     }
     if (contentLength > 0 && response.length() >= contentLength) break;
-    if (!client->connected() && !client->available()) break;
+    if (!client.connected() && !client.available()) break;
     delay(10);
   }
-  client->stop();
+  client.stop();
 
   if (chunked) {
     int openBrace = response.indexOf('{');

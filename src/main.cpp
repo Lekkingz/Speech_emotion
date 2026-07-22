@@ -669,4 +669,76 @@ void playTone(uint16_t frequency, uint16_t durationMs) {
       phase += phaseStep;
     }
     size_t written = 0;
-    esp_err_t writeResult = i2s_wri
+    esp_err_t writeResult = i2s_write(I2S_NUM, frames, n * 2 * sizeof(int16_t), &written, portMAX_DELAY);
+    if (writeResult != ESP_OK) {
+      Serial.printf("I2S beep write failed: %d\n", writeResult);
+      break;
+    }
+    totalFrames -= n;
+  }
+}
+
+void playResponse(const char *emotion) {
+  stopI2S();
+  delay(50);
+
+  i2s_config_t i2s_config_out = {
+    .mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_TX),
+    .sample_rate = 16000,
+    .bits_per_sample = I2S_BITS_PER_SAMPLE_16BIT,
+    .channel_format = I2S_CHANNEL_FMT_RIGHT_LEFT,
+    .communication_format = I2S_COMM_FORMAT_STAND_I2S,
+    .intr_alloc_flags = 0,
+    .dma_buf_count = 4,
+    .dma_buf_len = 256,
+    .use_apll = false
+  };
+
+  i2s_pin_config_t pin_config_out = {
+    .bck_io_num = I2S_BCK_PIN,
+    .ws_io_num = I2S_WS_PIN,
+    .data_out_num = I2S_DATA_OUT_PIN,
+    .data_in_num = I2S_PIN_NO_CHANGE
+  };
+
+  esp_err_t installResult = i2s_driver_install(I2S_NUM, &i2s_config_out, 0, NULL);
+  esp_err_t pinResult = i2s_set_pin(I2S_NUM, &pin_config_out);
+  if (installResult != ESP_OK || pinResult != ESP_OK) {
+    Serial.printf("I2S beep init failed: install=%d pin=%d\n", installResult, pinResult);
+    i2s_driver_uninstall(I2S_NUM);
+    initI2SRecorder();
+    return;
+  }
+
+  String e = String(emotion);
+  e.toLowerCase();
+  Serial.print("Emotion beep: ");
+  Serial.println(e);
+
+  if (e == "neutral") {
+    playTone(440, 180);
+  } else if (e == "calm") {
+    playTone(392, 140); delay(90); playTone(392, 140);
+  } else if (e == "happy") {
+    playTone(660, 120); delay(80); playTone(880, 180);
+  } else if (e == "sad") {
+    playTone(330, 250); delay(120); playTone(262, 300);
+  } else if (e == "angry") {
+    playTone(900, 80); delay(60); playTone(900, 80); delay(60); playTone(900, 160);
+  } else if (e == "fearful") {
+    playTone(760, 90); delay(70); playTone(520, 90); delay(70); playTone(760, 90);
+  } else if (e == "disgust") {
+    playTone(220, 120); delay(80); playTone(180, 220);
+  } else if (e == "surprised") {
+    playTone(520, 90); delay(60); playTone(700, 90); delay(60); playTone(950, 180);
+  } else {
+    playTone(500, 150);
+  }
+
+  delay(50);
+  i2s_zero_dma_buffer(I2S_NUM);
+  i2s_driver_uninstall(I2S_NUM);
+  initI2SRecorder();
+}
+
+

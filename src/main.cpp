@@ -113,7 +113,7 @@ bool connectToWiFi() {
   WiFi.mode(WIFI_STA);
   WiFi.setAutoReconnect(true);
   WiFi.persistent(true);
-  WiFi.disconnect(true, true);
+  WiFi.disconnect(false);
   delay(100);
 
   String configuredSsid = WIFI_SSID;
@@ -740,5 +740,6 @@ void playResponse(const char *emotion) {
   i2s_driver_uninstall(I2S_NUM);
   initI2SRecorder();
 }
+
 
 

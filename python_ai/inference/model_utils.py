@@ -18,6 +18,22 @@ DEFAULT_CNN_CONFIG = {
 }
 
 
+def _load_cnn_model(model_path: Path):
+    """Load the CNN model using the available Keras-compatible backend."""
+    try:
+        from tensorflow.keras.models import load_model as tf_load_model
+        return tf_load_model(model_path, compile=False)
+    except Exception as tf_exc:
+        try:
+            from keras.models import load_model as keras_load_model
+            return keras_load_model(model_path, compile=False)
+        except Exception as keras_exc:  # pragma: no cover - runtime dependency handling
+            raise ImportError(
+                "Unable to load the CNN model with TensorFlow/Keras. "
+                "Install tensorflow-cpu and h5py in the deployment environment."
+            ) from keras_exc
+
+
 def load_model_artifacts(model_dir: Optional[Path] = None):
     """Load the best available trained model artifacts for inference."""
     resolved_dir = Path(model_dir or MODEL_DIR).resolve()
@@ -31,16 +47,15 @@ def load_model_artifacts(model_dir: Optional[Path] = None):
 
     if cnn_model_path.exists() and cnn_encoder_path.exists():
         try:
-            from tensorflow.keras.models import load_model
-        except Exception as exc:  # pragma: no cover - runtime dependency handling
+            model = _load_cnn_model(cnn_model_path)
+        except ImportError:
             if legacy_model_path.exists() and scaler_path.exists() and encoder_path.exists():
                 model = joblib.load(legacy_model_path)
                 scaler = joblib.load(scaler_path)
                 encoder = joblib.load(encoder_path)
                 return {"model": model, "scaler": scaler, "encoder": encoder, "model_type": "mlp", "config": None}
-            raise ImportError("TensorFlow is required to load the CNN model") from exc
+            raise
 
-        model = load_model(cnn_model_path, compile=False)
         encoder = joblib.load(cnn_encoder_path)
         config = {}
         if cnn_config_path.exists():

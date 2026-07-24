@@ -6,3 +6,6 @@ scikit-learn==1.8.0
 scipy>=1.11.0
 soundfile>=0.12.1
 gunicorn>=22.0.0
+tensorflow-cpu>=2.16.0
+h5py>=3.10.0
+keras>=3.0.0

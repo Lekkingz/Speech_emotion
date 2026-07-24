@@ -50,7 +50,7 @@ extern "C" {
 
 #define I2S_NUM           (i2s_port_t)0
 #define SAMPLE_RATE       16000
-#define RECORD_SECONDS    2
+#define RECORD_SECONDS    3
 #define I2S_BCK_PIN       26
 #define I2S_WS_PIN        25
 #define I2S_DATA_IN_PIN   33
@@ -63,6 +63,7 @@ extern "C" {
 #define PLAY_RESPONSE_AUDIO true
 #define VOICE_AVG_THRESHOLD 250
 #define VOICE_PEAK_THRESHOLD 1500
+#define RESULT_DISPLAY_MS 180000UL
 
 #ifndef OLED_SDA_PIN
 #define OLED_SDA_PIN 21
@@ -343,8 +344,12 @@ void loop() {
   display.println("Processing...");
   display.display();
 
-  if (!postWavAndHandleResponse(wav)) {
+  bool predictionOk = postWavAndHandleResponse(wav);
+  if (!predictionOk) {
     Serial.println("POST failed");
+  } else {
+    Serial.println("Keeping prediction on OLED for 3 minutes.");
+    delay(RESULT_DISPLAY_MS);
   }
 
   setStatusLed(false);
